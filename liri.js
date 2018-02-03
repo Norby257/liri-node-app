@@ -17,22 +17,23 @@ var client = new twitterApi(keys.twitter);
 
 //takes in command line arguments as string
 
-var userInput = process.argv[2];
+var userCommand = process.argv[2];
+
+var userSearch = process.argv[3];
 
 //get string position in array of commands 
 //order of commands is node liri.js ______ thing here
 
  
 //this variable holds the spotify /twitter /movie API 
-var userSearch = userInput[3];
 
 //switch statement -based on command, we run the corresponding request 
 //debug this so that it works 
 //see YOUR calculator solution 
 
-switch(userInput) {
+switch(userCommand) {
     case "my-tweets":
-        console.log(userInput);
+        console.log(userCommand);
         //fix this below 
         // client.get('/norbyfirebase2', function(error, tweets, response) {
 
@@ -41,39 +42,35 @@ switch(userInput) {
         break;
     
     case "spotify-this-song": 
-        console.log(userInput);
+        console.log(userCommand);
         //more steps to be added
         break;
 
 
     case "movie-this":
-        console.log(userInput);
-        //movieName is what the user gives us 
-        var movieName = "";
-        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-        console.log(queryUrl);  
-
-        //making request to OMDB API   
-        request(queryUrl, function(error, response, body) {
-            if (!error && response.status === 200) {
-                //do stuff here 
-                 console.log("This movie is rated: " + JSON.parse(body).imdbRating);
-            }
+        console.log(userCommand);
+        console.log(userSearch);
+        request(`http://www.omdbapi.com/?apikey=trilogy&t= ${userSearch}`, function(error, response, body){
+            if (error) {
+                throw error;
+                console.log(error);
+            } 
+                // console.log(body);
+            let data = JSON.parse(body);
+            console.log( `Movie Name: ${data.Title}`);
+            console.log(`Movie Release Year: ${data.Year}`);
+            console.log(`IMDB Rating: ${data.imdbRating}`);
+            console.log( `Rotten Tomatoes Rating: ${data.Ratings[1].Value}`);
+            console.log(`Production Country: ${data.Country}`);
+            console.log(`Available in the following language(s): ${data.Language}`);
+            console.log(`The plot: (no spoliers!) ${data.Plot}`);            
+            console.log(`Starring: ${data.Actors}`);
         });
-    
-
-            
-
-            
-        //         console.log("The movie's title is " + JSON.parse(body).title);
-        //         console.log("Release year " + JSON.parse(body).y);
-        //       }
-        //     });
-        //more steps to be added 
+        //best way to do if it;s null? maybe define this functon and then call it here? how to best refactor it?
         break;
 
     case ("do-what-it-says"):
-        console.log(userInput);
+        console.log(userCommand);
         //more steps to be added 
         break;
 
