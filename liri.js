@@ -18,8 +18,8 @@ var client = new twitterApi(keys.twitter);
 //takes in command line arguments as string
 
 var userCommand = process.argv[2];
-
-var userSearch = process.argv[3];
+//how can we make this take more than one word titles?
+var userSearch = process.argv.slice(3);
 
 //get string position in array of commands 
 //order of commands is node liri.js ______ thing here
@@ -60,6 +60,7 @@ switch(userCommand) {
             console.log( `Movie Name: ${data.Title}`);
             console.log(`Movie Release Year: ${data.Year}`);
             console.log(`IMDB Rating: ${data.imdbRating}`);
+            //we may have to fix the rotten tomatoes one too..if not undefined, print it. cuz logs error 
             console.log( `Rotten Tomatoes Rating: ${data.Ratings[1].Value}`);
             console.log(`Production Country: ${data.Country}`);
             console.log(`Available in the following language(s): ${data.Language}`);
