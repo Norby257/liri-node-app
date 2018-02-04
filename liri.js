@@ -37,7 +37,7 @@ switch(userCommand) {
          
             // using tweets.length so i don't have to make 20 tweets, and not get an error 
             //lets see how to arrange them in order for when they were created. so that way it's OLDEST TO NEWEST. 
-            //pseudo code this 
+            //pseudo code for sorting tweets by created_date. 
             //set result of loop to array (or an object)?
             //step thru array, and sort it according to created date
             //display the correctly sorted tweets 
@@ -57,13 +57,12 @@ switch(userCommand) {
     case "spotify-this-song": 
         console.log(userCommand);
         console.log(userSearch);
-       spotify.search({ type: `track`, query: `${userSearch}`}, function(err, data, response){
+       spotify.search({ type: `track`, query: `${userSearch}`}, function(error, data, response){
            if (err) {
-               console.log(`Error occured ${err}`);
+               console.log(`Error occured ${error}`);
                return;
            }
             else {
-                //just doing some testing so i can determine the exact array index from the object(s) etc 
                let artistName = (data.tracks.items[0].artists[0].name);
                let songName = (data.tracks.items[0].name);
                let previewUrl = (data.tracks.items[0].preview_url);
@@ -107,7 +106,23 @@ switch(userCommand) {
     case ("do-what-it-says"):
         console.log(userCommand);
         //more steps to be added 
+        fs.readFile('./random.txt', 'utf8', (error, data) => {
+            if (error) throw error;
+            console.log(data);
+             //ok so we need to store output of this data
+            let randomFileData = data;
+            //and then make that data be connected to the spotify call
+
+        });
         break;
+
+        //for every command, output all of the data to at txt file called log.txt
+        //for the bonus item, I'll need to refactor into functions first and then try it? 
+
+        // fs.appendFile('./log.txt', 'utf8', (error, data) => {
+        //     if (error) throw error;
+
+        // });
 
     }
 
