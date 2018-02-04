@@ -5,15 +5,15 @@ require("dotenv").config();
 const keys = require('./keys.js');
 console.log('keys.js');
 const spotifyApi = require('node-spotify-api');
-const twitterApi = require('twitter');
+const Twitter = require('twitter');
 const request = require('request');
 const fs = require('fs');
-
+// console.log(keys.twitter);
 
 //which file do the below vars go into?
 //skipping to omdb for now
 var spotify = new spotifyApi(keys.spotify);
-var client = new twitterApi(keys.twitter);
+var client = new Twitter(keys.twitter);
 
 //takes in command line arguments as string
 
@@ -34,16 +34,32 @@ var userSearch = process.argv.slice(3);
 switch(userCommand) {
     case "my-tweets":
         console.log(userCommand);
-        //fix this below 
-        // client.get('/norbyfirebase2', function(error, tweets, response) {
-
-        //     console.log(tweets);
-        //  });
+        //log out, log in. check all emails and text messages for it. appears to be just an authentication error 
+        //and follow the NPM syntax, not the AJAX req, woo 
+        //do stuff here , modify parameters accordingly etc 
+        //took a look at API doc again - looks like this requires authentication. so either I have to provide my Twitter key or use a different request
+        var params = {screen_name: 'norbyfirebase2'};
+        client.get('statuses/user_timeline', params, function(error, tweets, response) {
+          if (!error) {
+            console.log(tweets);
+            //how to get it where it;s only created at and text? 
+          } else {
+              console.log(error);
+          }
+        });
         break;
     
     case "spotify-this-song": 
         console.log(userCommand);
-        //more steps to be added
+        console.log(userSearch);
+       spotify.search({ type: `track`, query: `${userSearch}`}, function(err, data){
+           if (err) {
+               console.log(`Error occured ${err}`);
+               return;
+           }
+           console.log(data);
+
+       });
         break;
 
 
