@@ -24,9 +24,6 @@ var userSearch = process.argv.slice(3);
 //get string position in array of commands 
 //order of commands is node liri.js ______ thing here
 
- 
-//this variable holds the spotify /twitter /movie API 
-
 //switch statement -based on command, we run the corresponding request 
 //debug this so that it works 
 //see YOUR calculator solution 
@@ -34,16 +31,18 @@ var userSearch = process.argv.slice(3);
 switch(userCommand) {
     case "my-tweets":
         console.log(userCommand);
-        //log out, log in. check all emails and text messages for it. appears to be just an authentication error 
-        //and follow the NPM syntax, not the AJAX req, woo 
-        //do stuff here , modify parameters accordingly etc 
-        //took a look at API doc again - looks like this requires authentication. so either I have to provide my Twitter key or use a different request
         var params = {screen_name: 'norbyfirebase2'};
         client.get('statuses/user_timeline', params, function(error, tweets, response) {
           if (!error) {
-            console.log(tweets);
-            //how to get it where it;s only created at and text? 
-          } else {
+         
+            // using tweets.length so i don't have to make 20 tweets, and not get an error 
+            //lets see how to arrange them in order for when they were created. so that way it's OLDEST TO NEWEST. 
+                for (let i = 0; i < tweets.length; i++) {
+                console.log(`At this time,  ${tweets[i].created_at}`);
+                console.log(`Here's what you tweeted: ${tweets[i].text}`);
+            }
+            }
+           else {
               console.log(error);
           }
         });
