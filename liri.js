@@ -31,62 +31,41 @@ function doUserCommand() {
 
 }
     switch(userCommand) {
+
         case "my-tweets":
             displayTweets();
             break;
     
-    case "spotify-this-song": 
-        console.log(userCommand);
-        console.log(userSearch);
-       spotify.search({ type: `track`, query: `${userSearch}`}, function(error, data, response){
-           if (err) {
-               console.log(`Error occured ${error}`);
-               return;
-           }
-            else {
-               let artistName = (data.tracks.items[0].artists[0].name);
-               let songName = (data.tracks.items[0].name);
-               let previewUrl = (data.tracks.items[0].preview_url);
-               let albumName = (data.tracks.items[0].album.name);
-               console.log(`Artist: ${artistName}`);
-               console.log(`Song title: ${songName}`);
-                console.log(`Click here to check out the song! ${previewUrl}`);
-                console.log(`Song is from this dope album: ${albumName}`);
-                // let songData = data.artists[0].name;
-                // console.log(songData);
-                // console.log(response.tracks.items[0]);
+        case "spotify-this-song": 
+            console.log(userCommand);
+            console.log(userSearch);
+        spotify.search({ type: `track`, query: `${userSearch}`}, function(error, data, response){
+            if (err) {
+                console.log(`Error occured ${error}`);
+                return;
             }
+                else {
+                let artistName = (data.tracks.items[0].artists[0].name);
+                let songName = (data.tracks.items[0].name);
+                let previewUrl = (data.tracks.items[0].preview_url);
+                let albumName = (data.tracks.items[0].album.name);
+                console.log(`Artist: ${artistName}`);
+                console.log(`Song title: ${songName}`);
+                    console.log(`Click here to check out the song! ${previewUrl}`);
+                    console.log(`Song is from this dope album: ${albumName}`);
+                    // let songData = data.artists[0].name;
+                    // console.log(songData);
+                    // console.log(response.tracks.items[0]);
+                }
 
-       });
-        break;
+        });
+            break;
 
 
     case "movie-this":
         console.log(userCommand);
         console.log(userSearch);
-        request(`http://www.omdbapi.com/?apikey=trilogy&t= ${userSearch}`, function(error, response, body){
-            if (error) {
-                throw error;
-                console.log(error);
-            } 
-
-            
-                // console.log(body);
-            let data = JSON.parse(body);
-            console.log( `Movie Name: ${data.Title}`);
-            console.log(`Movie Release Year: ${data.Year}`);
-            console.log(`IMDB Rating: ${data.imdbRating}`);            
-            console.log( `Rotten Tomatoes Rating: ${data.Ratings[1].Value}`);
-            console.log(`Production Country: ${data.Country}`);
-            console.log(`Available in the following language(s): ${data.Language}`);
-            console.log(`The plot: (no spoliers!) ${data.Plot}`);            
-            console.log(`Starring: ${data.Actors}`);
-        });
-        //best way to do if it;s null? maybe define this functon and then call it here? how to best refactor it?
-        //pseudocode for checking if undefined 
-        // if (data.Ratings[1].Value = undefined ) or 
-        // if (data.Ratings[1].Value !undefined)
-        //bc this will help if someone enters a movie from the 30's....or before rotten tomatoes 
+        displayMovieInfo();
         break;
 
     case ("do-what-it-says"):
@@ -129,6 +108,46 @@ function doUserCommand() {
     });
 }
 
+function displayMovieInfo() {
+    if (userSearch === "") {
+            console.log("Can't decide what to watch next? No worries. I got you.")
+            request(`http://www.omdbapi.com/?t=Mr+Nobody`, function(error, response, body) {
+            let dataMrNobody = JSON.parse(body);
+            console.log(`Crisp synopsis: ${dataMrNobody}`);
+            //need to deal with rotten tomatoes score being undefined 
+
+
+        }
+    );
+    } else {
+        request(`http://www.omdbapi.com/?apikey=trilogy&t= ${userSearch}`, function(error, response, body){
+            if (error) {
+                throw error;
+                console.log(error);
+            } 
+                // console.log(body);
+            let data = JSON.parse(body);
+            console.log( `Movie Name: ${data.Title}`);
+            console.log(`Movie Release Year: ${data.Year}`);
+            console.log(`IMDB Rating: ${data.imdbRating}`);            
+            console.log( `Rotten Tomatoes Rating: ${data.Ratings[1].Value}`);
+            console.log(`Production Country: ${data.Country}`);
+            console.log(`Available in the following language(s): ${data.Language}`);
+            console.log(`The plot: (no spoliers!) ${data.Plot}`);            
+            console.log(`Starring: ${data.Actors}`);
+    
+         });
+        }
+
+    }
+
+
+//more comments for display movie info
+/*best way to do if it;s null? maybe define this functon and then call it here? how to best refactor it?
+//pseudocode for checking if undefined 
+// if (data.Ratings[1].Value = undefined ) or 
+// if (data.Ratings[1].Value !undefined)
+//bc this will help if someone enters a movie from the 30's....or before rotten tomatoes */ 
 
 
 
