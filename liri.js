@@ -27,32 +27,13 @@ var userSearch = process.argv.slice(3);
 //switch statement -based on command, we run the corresponding request 
 //debug this so that it works 
 //see YOUR calculator solution 
+function doUserCommand() {
 
-switch(userCommand) {
-    case "my-tweets":
-        console.log(userCommand);
-        var params = {screen_name: 'norbyfirebase2'};
-        client.get('statuses/user_timeline', params, function(error, tweets, response) {
-          if (!error) {
-         
-            // using tweets.length so i don't have to make 20 tweets, and not get an error 
-            //lets see how to arrange them in order for when they were created. so that way it's OLDEST TO NEWEST. 
-            //pseudo code for sorting tweets by created_date. 
-            //set result of loop to array (or an object)?
-            //step thru array, and sort it according to created date
-            //display the correctly sorted tweets 
-            //moment js will prolly be really helpful here 
-
-                for (let i = 0; i < tweets.length; i++) {
-                console.log(`At this time,  ${tweets[i].created_at}`);
-                console.log(`Here's what you tweeted: ${tweets[i].text}`);
-            }
-            }
-           else {
-              console.log(error);
-          }
-        });
-        break;
+}
+    switch(userCommand) {
+        case "my-tweets":
+            displayTweets();
+            break;
     
     case "spotify-this-song": 
         console.log(userCommand);
@@ -88,12 +69,13 @@ switch(userCommand) {
                 throw error;
                 console.log(error);
             } 
+
+            
                 // console.log(body);
             let data = JSON.parse(body);
             console.log( `Movie Name: ${data.Title}`);
             console.log(`Movie Release Year: ${data.Year}`);
-            console.log(`IMDB Rating: ${data.imdbRating}`);
-            //we may have to fix the rotten tomatoes one too..if not undefined, print it. cuz logs error 
+            console.log(`IMDB Rating: ${data.imdbRating}`);            
             console.log( `Rotten Tomatoes Rating: ${data.Ratings[1].Value}`);
             console.log(`Production Country: ${data.Country}`);
             console.log(`Available in the following language(s): ${data.Language}`);
@@ -101,6 +83,10 @@ switch(userCommand) {
             console.log(`Starring: ${data.Actors}`);
         });
         //best way to do if it;s null? maybe define this functon and then call it here? how to best refactor it?
+        //pseudocode for checking if undefined 
+        // if (data.Ratings[1].Value = undefined ) or 
+        // if (data.Ratings[1].Value !undefined)
+        //bc this will help if someone enters a movie from the 30's....or before rotten tomatoes 
         break;
 
     case ("do-what-it-says"):
@@ -125,6 +111,24 @@ switch(userCommand) {
         // });
 
     }
+    function displayTweets() {
+        console.log(userCommand);
+        var params = {screen_name: 'norbyfirebase2'};
+        client.get('statuses/user_timeline', params, function(error, tweets, response) {
+        if (!error) {
+            // using tweets.length so i don't have to make 20 tweets, and not get an error 
+                for (let i = 0; i < tweets.length; i++) {
+                console.log(`At this time,  ${tweets[i].created_at}`);
+                console.log(`Here's what you tweeted: ${tweets[i].text}`);
+            }
+            }
+        else {
+            console.log(error);
+        }
+    
+    });
+}
+
 
 
 
