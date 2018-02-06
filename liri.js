@@ -37,58 +37,18 @@ function doUserCommand() {
             break;
     
         case "spotify-this-song": 
-            console.log(userCommand);
-            console.log(userSearch);
-        spotify.search({ type: `track`, query: `${userSearch}`}, function(error, data, response){
-            if (err) {
-                console.log(`Error occured ${error}`);
-                return;
-            }
-                else {
-                let artistName = (data.tracks.items[0].artists[0].name);
-                let songName = (data.tracks.items[0].name);
-                let previewUrl = (data.tracks.items[0].preview_url);
-                let albumName = (data.tracks.items[0].album.name);
-                console.log(`Artist: ${artistName}`);
-                console.log(`Song title: ${songName}`);
-                    console.log(`Click here to check out the song! ${previewUrl}`);
-                    console.log(`Song is from this dope album: ${albumName}`);
-                    // let songData = data.artists[0].name;
-                    // console.log(songData);
-                    // console.log(response.tracks.items[0]);
-                }
-
-        });
+             showSong();
             break;
 
 
     case "movie-this":
-        console.log(userCommand);
-        console.log(userSearch);
         displayMovieInfo();
         break;
 
     case ("do-what-it-says"):
-        console.log(userCommand);
-        //more steps to be added 
-        fs.readFile('./random.txt', 'utf8', (error, data) => {
-            if (error) throw error;
-            console.log(data);
-             //ok so we need to store output of this data
-            let randomFileData = data;
-            //and then make that data be connected to the spotify call
-
-        });
+        simonSays();
+        
         break;
-
-        //for every command, output all of the data to at txt file called log.txt
-        //for the bonus item, I'll need to refactor into functions first and then try it? 
-
-        // fs.appendFile('./log.txt', 'utf8', (error, data) => {
-        //     if (error) throw error;
-
-        // });
-
     }
     function displayTweets() {
         console.log(userCommand);
@@ -115,8 +75,6 @@ function displayMovieInfo() {
             let dataMrNobody = JSON.parse(body);
             console.log(`Crisp synopsis: ${dataMrNobody}`);
             //need to deal with rotten tomatoes score being undefined 
-
-
         }
     );
     } else {
@@ -141,16 +99,83 @@ function displayMovieInfo() {
 
     }
 
-
-//more comments for display movie info
-/*best way to do if it;s null? maybe define this functon and then call it here? how to best refactor it?
-//pseudocode for checking if undefined 
+//pseudocode for checking if rotten tomatoes rating is  undefined 
 // if (data.Ratings[1].Value = undefined ) or 
 // if (data.Ratings[1].Value !undefined)
 //bc this will help if someone enters a movie from the 30's....or before rotten tomatoes */ 
 
+function showSong() {
+    //this is not working as expected when there is not input?...not sure why 
+    if(userSearch = "") {
+        console.log("Here's a nice tune to add to your playlist");
+        let song = "The sign"
+        spotify.search({ type: `track`, query: `${song}`}, function(error,data,response){
+            if(error) {
+                console.log(error);
+            }
+            else {
+                console.log(`Song is from this dope album: ${albumName}`);
+            }
 
+        });
+        
+       
+    }
 
+    spotify.search({ type: `track`, query: `${userSearch}`}, function(error, data, response){
+        if (error) {
+            console.log(`Error occured ${error}`);
+            return;
+        }
+            else {
+                let artistName = (data.tracks.items[0].artists[0].name);
+                let songName = (data.tracks.items[0].name);
+                let previewUrl = (data.tracks.items[0].preview_url);
+                let albumName = (data.tracks.items[0].album.name);
+                console.log(`Artist: ${artistName}`);
+                console.log(`Song title: ${songName}`);
+                console.log(`Click here to check out the song! ${previewUrl}`);
+                console.log(`Song is from this dope album: ${albumName}`);
+                
+            }
+
+    });
+    }
+
+    function simonSays() {
+        fs.readFile('./random.txt', 'utf8', (error, data) => {
+            if (error) throw error;
+            console.log(data);
+            let randomFileData = data;
+            //and then make that data be connected to the spotify call
+            //split the text and store into array, so we can just grab the elements after a specific index
+            userSearch = data.split();
+            console.log(userSearch[1]); 
+            spotify.search({ type: `track`, query: `${userSearch}`}, function(error, data, response){
+                if (error) {
+                    console.log(`Error occured ${error}`);
+                    return;
+                }
+                 else {
+                    let artistName = (data.tracks.items[0].artists[0].name);
+                     let songName = (data.tracks.items[0].name);
+                     let previewUrl = (data.tracks.items[0].preview_url);
+                    let albumName = (data.tracks.items[0].album.name);
+                    console.log(`Artist: ${artistName}`);
+                    console.log(`Song title: ${songName}`);
+                    console.log(`Click here to check out the song! ${previewUrl}`);
+                    console.log(`Song is from this dope album: ${albumName}`);
+                        
+                    }
+           
+
+            });
+            
+
+        });
+    }
+
+   
 
 
 
