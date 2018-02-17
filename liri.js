@@ -69,7 +69,7 @@ function doUserCommand() {
 }
 
 function displayMovieInfo() {
-    if (userSearch === "") {
+    if (userSearch =="") {
             console.log("Can't decide what to watch next? No worries. I got you.")
             request(`http://www.omdbapi.com/?t=Mr+Nobody`, function(error, response, body) {
             let dataMrNobody = JSON.parse(body);
@@ -78,7 +78,7 @@ function displayMovieInfo() {
         }
     );
     } else {
-        request(`http://www.omdbapi.com/?apikey=trilogy&t= ${userSearch}`, function(error, response, body){
+        request(`http://www.omdbapi.com/?apikey=trilogy&t=${userSearch}`, function(error, response, body){
             if (error) {
                 throw error;
                 console.log(error);
